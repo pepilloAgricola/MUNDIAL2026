@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seguimiento Mundial Fútbol 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Seguimiento del Mundial</p>
+        <h1>Fútbol 2026: resultados, anotadores y posición</h1>
+        <p class="hero-copy">Introduce los goles de cada partido, registra a los anotadores y la tabla de posiciones se actualiza automáticamente. Incluye fase de grupos y fases eliminatorias. Horarios en hora de Cuba (UTC-5).</p>
+      </div>
+      <div class="hero-actions">
+        <button id="resetBtn">Reiniciar resultados</button>
+        <span id="saveStatus">Los datos se guardan localmente en tu navegador.</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel intro-card">
+        <div>
+          <h2>Cómo usar esta página</h2>
+          <ul>
+            <li>Selecciona cada partido y escribe los goles de los equipos.</li>
+            <li>Completa los anotadores para cada equipo.</li>
+            <li>Las tablas de posiciones de los grupos se recalculan al instante.</li>
+            <li>Los cuadros eliminatorios avanzan al ganador automáticamente.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="groupStage" class="panel"></section>
+
+      <section id="knockoutStage" class="panel"></section>
+
+      <section id="topScorersStage" class="panel"></section>
+    </main>
+
+    <footer class="footer">
+      <p>Diseño pensado para seguir el Mundial con banderas, horario local de Cuba y una experiencia sencilla para actualizar resultados.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,374 @@
+:root {
+  --bg: #f2f6ff;
+  --surface: #ffffff;
+  --surface-strong: #e7eeff;
+  --text: #1f2937;
+  --muted: #52606d;
+  --accent: #2f6ff6;
+  --accent-soft: #d7e6ff;
+  --border: rgba(47, 111, 246, 0.15);
+  --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: radial-gradient(circle at top, #f3f8ff, #e7efff 38%, #f2f6ff 100%);
+  color: var(--text);
+}
+
+.page-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #ffffff 0%, #dbe7ff 100%);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #0f172a;
+  opacity: 0.8;
+  font-size: 0.82rem;
+  margin: 0 0 8px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.05;
+}
+
+.hero-copy {
+  margin: 16px 0 0;
+  color: var(--muted);
+  max-width: 720px;
+  line-height: 1.75;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(47, 111, 246, 0.2);
+}
+
+#saveStatus {
+  color: var(--muted);
+}
+
+.panel {
+  margin-bottom: 28px;
+}
+
+.intro-card {
+  display: grid;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 22px;
+}
+
+.intro-card h2 {
+  margin: 0 0 14px;
+}
+
+.intro-card ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.group-card,
+.bracket-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+
+.group-card h3,
+.bracket-card h3 {
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-headline {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.group-body {
+  display: grid;
+  gap: 18px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+thead th,
+tbody td {
+  padding: 12px 10px;
+  text-align: left;
+}
+
+thead th {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+tbody tr {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+tbody tr:nth-child(odd) {
+  background: #f9fbff;
+}
+
+.flag {
+  display: inline-flex;
+  width: 2em;
+  justify-content: center;
+}
+
+.match-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(220px, 2fr) minmax(84px, 1fr) minmax(220px, 2fr) minmax(84px, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.match-row:first-of-type {
+  border-top: none;
+}
+
+.match-time {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.team-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.score-input,
+.scorer-input {
+  width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.score-input {
+  text-align: center;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.team-block {
+  display: grid;
+  gap: 10px;
+}
+
+.scorer-block {
+  display: grid;
+  gap: 8px;
+}
+
+.autocomplete-wrapper {
+  position: relative;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 6px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+}
+
+.autocomplete-list.visible {
+  display: block;
+}
+
+.autocomplete-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.autocomplete-item:hover {
+  background: #eef4ff;
+}
+
+.bracket-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(240px, 1.8fr) minmax(84px, 1fr) minmax(240px, 1.8fr) minmax(84px, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.bracket-row:first-of-type {
+  border-top: none;
+}
+
+.stage-heading {
+  font-size: 1.05rem;
+  margin: 0 0 16px;
+}
+
+.footer {
+  color: var(--muted);
+  text-align: center;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .match-row,
+  .bracket-row {
+    grid-template-columns: 1fr;
+  }
+
+  .match-row > *,
+  .bracket-row > * {
+    width: 100%;
+  }
+}
+
+/* ── Tabla de goleadores mejorada ── */
+.scorers-card h2 { margin: 0 0 18px; }
+
+.scorers-table { width: 100%; }
+
+.scorers-table .rank-cell {
+  width: 48px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.scorers-table .scorer-name-cell { font-weight: 600; }
+
+.scorers-table .scorer-team-cell {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.scorers-table .scorer-goals-cell { width: 180px; }
+
+.goals-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goals-bar {
+  height: 8px;
+  background: linear-gradient(90deg, var(--accent), #7eb5ff);
+  border-radius: 99px;
+  min-width: 4px;
+  transition: width 0.4s ease;
+}
+
+.goals-count {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent);
+  min-width: 20px;
+}
+
+.top-scorer { background: #fffbea !important; }
+.top-scorer .goals-bar { background: linear-gradient(90deg, #f59e0b, #fcd34d); }
+.top-scorer .goals-count { color: #d97706; }
+
+.empty-scorers { color: var(--muted); margin: 0; }
+
+/* ── Posición badge en standings ── */
+.pos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--surface-strong);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+/* ── Diferencia de goles coloreada ── */
+.diff-pos { color: #16a34a; font-weight: 600; }
+.diff-neg { color: #dc2626; font-weight: 600; }
+
+/* ── Match list wrapper ── */
+.match-list { display: grid; gap: 0; }
