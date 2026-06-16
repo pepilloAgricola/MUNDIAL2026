@@ -236,23 +236,65 @@ const knockoutContainer   = document.getElementById("knockoutStage");
 const resetBtn            = document.getElementById("resetBtn");
 const saveStatus          = document.getElementById("saveStatus");
 
-let teamSquads = {};
+// ─── SQUADS (embebido — no requiere fetch, funciona en GitHub Pages) ──────────
+const teamSquads = {
+  "México": ["Guillermo Ochoa","Raúl Jiménez","Alexis Vega","Santiago Giménez","Carlos Acevedo","Armando González","Israel Reyes","Julián Quiñones","Orbelín Pineda","Obed Vargas","Gilberto Mora","Mateo Chávez","César Huerta","Guillermo Martínez","Jesús Gallardo","Luis Chávez","Roberto Alvarado","Brian Gutiérrez"],
+  "Corea del Sur": ["Kim Seung-gyu","Son Heung-min","Lee Jae-sung","Hwang Hee-chan","Kim Min-jae","Hwang In-beom","Paik Seung-ho","Cho Gue-sung","Lee Kang-in","Oh Hyeon-gyu","Jens Castrop","Song Bum-keun","Lee Tae-seok","Cho Wi-je","Kim Moon-hwan","Park Jin-seob","Bae Jun-ho","Yang Hyun-jun","Jo Hyeon-woo","Seol Young-woo","Lee Gi-hyuk","Lee Han-beom","Kim Tae-hyeon","Eom Ji-sung","Lee Dong-gyeong","Kim Jin-gyu"],
+  "República Checa": ["Matěj Kovář","David Zima","Jan Kuchta","Lukáš Červ","Mojmír Chytil","David Jurásek","Pavel Šulc","Jaroslav Zelený","David Douděra","Tomáš Souček","Lukáš Horníček","Alexandr Sojka","Hugo Sochůrek","Denis Višinský"],
+  "Sudáfrica": ["Ronwen Williams","Thabang Matuludi","Khulumani Ndamane","Teboho Mokoena","Thalente Mbatha","Aubrey Modiba","Oswin Appollis","Tshepang Moremi","Lyle Foster","Relebohile Mofokeng","Themba Zwane","Thapelo Maseko","Sphephelo Sithole","Mbekezeli Mbokazi","Iqraam Rayners","Sipho Chaine","Evidence Makgopa","Samukele Kabini","Nkosinathi Sibisi","Khuliso Mudau","Ime Okon","Ricardo Goss","Jayden Adams","Olwethu Makhanya","Kamogelo Sebelebele","Bradley Cross"],
+  "Canadá": ["Dayne St. Clair","Alistair Johnston","Alfie Jones","Luc de Fougerolles","Joel Waterman","Mathieu Choinière","Stephen Eustáquio","Ismaël Koné","Cyle Larin","Jonathan David","Liam Millar","Tani Oluwaseyi","Derek Cornelius","Jacob Shaffelburg","Moïse Bombito","Maxime Crépeau","Tajon Buchanan","Owen Goodman","Alphonso Davies","Ali Ahmed","Jonathan Osorio","Richie Laryea","Niko Sigur","Promise David","Nathan Saliba","Jayden Nelson"],
+  "Bosnia y Herzegovina": [],
+  "Suiza": ["Gregor Kobel","Miro Muheim","Silvan Widmer","Granit Xhaka","Dan Ndoye","Yvon Mvogo","Ricardo Rodriguez","Ardon Jashari","Djibril Sow","Christian Fassnacht","Rubén Vargas","Eray Cömert"],
+  "Catar": ["Mahmud Abunada","Pedro Miguel","Lucas Mendes","Issa Laye","Jassem Gaber","Abdulaziz Hatem","Ahmed Alaaeldin","Edmilson Junior","Mohammed Muntari","Hassan Al-Haydos","Akram Afif","Karim Boudiaf","Sultan Al-Brake","Almoez Ali","Ahmed Fathy","Salah Zakaria","Meshaal Barsham","Assim Madibo","Tahsin Jamshid","Al-Hashmi Al-Hussain","Mohamed Manai"],
+  "Brasil": ["Alisson","Éderson Silva","Gabriel Magalhães","Marquinhos","Casemiro","Alex Sandro","Vinícius Júnior","Bruno Guimarães","Matheus Cunha","Neymar","Raphinha","Weverton","Danilo Luiz","Bremer","Léo Pereira","Douglas Santos","Fabinho","Danilo Santos","Endrick","Lucas Paquetá","Luiz Henrique","Gabriel Martinelli","Ederson Moraes","Roger Ibañez","Igor Thiago","Rayan"],
+  "Escocia": [],
+  "Marruecos": ["Yassine Bounou","Achraf Hakimi","Noussair Mazraoui","Sofyan Amrabat","Marwane Saâdane","Gessime Yassine","Amine Sbaï","Chadi Riad","Youssef Belammari","Ayoub El Kaabi","Anass Salah-Eddine"],
+  "Haití": ["Johny Placide","Carlens Arcus","Keeto Thermoncy","Ricardo Adé","Hannes Delcroix","Carl Sainté","Derrick Etienne Jr.","Martin Expérience","Duckens Nazon","Jean-Ricner Bellegarde","Louicius Deedson","Alexandre Pierre","Duke Lacroix","Garven Metusala","Ruben Providence","Lenny Joseph","Danley Jean Jacques","Wilson Isidor","Yassin Fortuné","Frantzdy Pierrot","Josué Casimir","Jean-Kévin Duverne","Josué Duverger","Wilguens Paugain","Dominique Simon","Woodensky Pierre"],
+  "Estados Unidos": ["Matt Turner","Sergiño Dest","Chris Richards","Tyler Adams","Antonee Robinson","Auston Trusty","Giovanni Reyna","Weston McKennie","Sebastian Berhalter","Cristian Roldan","Alex Freeman","Malik Tillman","Max Arfsten","Haji Wright","Folarin Balogun","Timothy Weah","Mark McKenzie","Joe Scally","Matt Freese","Chris Brady","Alejandro Zendejas"],
+  "Australia": ["Mathew Ryan","Miloš Degenek","Alessandro Circati","Jacob Italiano","Jordan Bos","Jason Geria","Mathew Leckie","Connor Metcalfe","Mohamed Touré","Ajdin Hrustic","Awer Mabil","Paul Izzo","Aiden O'Neill","Cammy Devlin","Cristian Volpato","Cameron Burgess","Jackson Irvine","Nishan Velupillay","Paul Okon-Engstler","Lucas Herrington","Tete Yengi"],
+  "Turquía": ["Deniz Gül","Hakan Çalhanoğlu","Kenan Yıldız","Altay Bayındır","Eren Elmalı","Oğuz Aydın","Samet Akaydin","Can Uzun"],
+  "Paraguay": ["Gatito Fernández","Gustavo Velázquez","Omar Alderete","Juan José Cáceres","Fabián Balbuena","Júnior Alonso","Ramón Sosa","Diego Gómez","Andrés Cubas","Gustavo Gómez","Damián Bobadilla","Kaku","Álex Arce","Julio Enciso","Braian Ojeda","Gabriel Ávalos","Gastón Olveira","Matías Galarza"],
+  "Alemania": ["Manuel Neuer","Antonio Rüdiger","Waldemar Anton","Jonathan Tah","Aleksandar Pavlović","Joshua Kimmich","Kai Havertz"],
+  "Curazao": ["Eloy Room","Shurandy Sambo","Juriën Gaari","Leandro Bacuna","Jeremy Antonisse","Sontje Hansen","Tyrese Noslin","Kenji Gorré","Ar'jany Martha","Jearl Margaritha","Brandley Kuwas","Armando Obispo","Gervane Kastaneer","Joshua Brenet","Tahith Chong","Kevin Felida","Riechedly Bazoer"],
+  "Costa de Marfil": ["Yahia Fofana","Ousmane Diomande","Ibrahim Sangaré","Nicolas Pépé","Emmanuel Agbadou","Evan Ndicka","Evann Guessand","Alban Lafont","Bazoumana Touré","Parfait Guiagon","Christ Inao Oulaï"],
+  "Ecuador": ["Hernán Galíndez","Félix Torres","Piero Hincapié","Joel Ordóñez","Jordy Alcívar","Willian Pacho","Pervis Estupiñán","Anthony Valencia","John Yeboah","Kendry Páez","Kevin Rodríguez","Moisés Ramírez","Enner Valencia","Jeremy Arévalo","Jackson Porozo","Yaimar Medina"],
+  "Países Bajos": ["Virgil van Dijk","Nathan Aké","Jan Paul van Hecke","Justin Kluivert","Ryan Gravenberch","Wout Weghorst","Memphis Depay","Cody Gakpo","Mats Wieffer","Donyell Malen","Brian Brobbey","Teun Koopmeiners","Frenkie de Jong","Denzel Dumfries"],
+  "Japón": ["Shōgo Taniguchi","Kō Itakura","Yūto Nagatomo","Shūto Machino","Ao Tanaka","Keito Nakamura","Junya Itō","Daichi Kamada","Tsuyoshi Watanabe","Yuito Suzuki","Ayase Ueda","Kōki Ogawa","Ayumu Seko","Hiroki Itō","Takehiro Tomiyasu","Tomoki Hayakawa","Kaishū Sano","Junnosuke Suzuki","Kento Shiogai"],
+  "Suecia": ["Jacob Widell Zetterström","Gustaf Lagerbielke","Victor Lindelöf","Isak Hien","Gabriel Gudmundsson","Herman Johansson","Lucas Bergvall","Daniel Svensson","Alexander Isak","Benjamin Nygren","Anthony Elanga","Viktor Johansson","Ken Sema","Hjalmar Ekdal","Carl Starfelt","Jesper Karlström","Viktor Gyökeres","Yasin Ayari","Mattias Svanberg","Eric Smith","Alexander Bernhardsson","Besfort Zeneli"],
+  "Túnez": ["Omar Rekik","Adem Arous","Dylan Bronn","Elias Achouri","Elias Saad","Hazem Mastouri","Hannibal Mejbri","Ismaël Gharbi","Mortadha Ben Ouanes","Rani Khedira","Khalil Ayari","Hadj Mahmoud","Aymen Dahmen","Ellyes Skhiri","Rayan Elloumi","Firas Chaouat","Yan Valery","Mohamed Amine Ben Hamida","Sabri Ben Hessen","Moutaz Neffati"],
+  "Bélgica": ["Thibaut Courtois","Zeno Debast","Arthur Theate","Brandon Mechele","Maxim De Cuyper","Axel Witsel","Kevin De Bruyne","Youri Tielemans","Romelu Lukaku","Leandro Trossard","Jérémy Doku","Senne Lammens","Mike Penders","Dodi Lukébakio","Thomas Meunier","Koni De Winter","Charles De Ketelaere","Joaquin Seys","Amadou Onana","Nathan Ngoy","Matias Fernandez-Pardo"],
+  "Irán": ["Ehsan Hajsafi","Shojae Khalilzadeh","Milad Mohammadi","Saeid Ezatolahi","Payam Niazmand","Hossein Kanaanizadegan","Saman Ghoddos","Rouzbeh Cheshmi","Mohammad Ghorbani","Hossein Hosseini","Ramin Rezaeian","Dennis Eckert","Danial Eiri","Amirmohammad Razzaghinia"],
+  "Nueva Zelanda": ["Liberato Cacace","Alex Rufer","Nando Pijnaker","Finn Surman","Kosta Barbarouses"],
+  "Egipto": ["Mohamed El Shenawy","Yasser Ibrahim","Mohamed Hany","Hossam Abdelmaguid","Ramy Rabia","Mohamed Abdelmonem","Trézéguet","Emam Ashour","Hamza Abdelkarim","Mohamed Salah","Mostafa Ziko","Haissem Hassan","Ahmed Fatouh","Hamdy Fathy","Karim Hafez","El Mahdy Soliman","Mohanad Lasheen","Nabil Emad","Tarek Alaa","Zizo","Mohamed Alaa"],
+  "España": ["David Raya","Marc Pubill","Álex Grimaldo","Gavi","Dani Olmo","Yéremy Pino","Pedro Porro","Joan Garcia","Aymeric Laporte","Álex Baena","Rodri","Nico Williams","Martín Zubimendi","Lamine Yamal","Pedri","Mikel Oyarzabal","Pau Cubarsí","Unai Simón","Marc Cucurella","Víctor Muñoz","Borja Iglesias"],
+  "Cabo Verde": ["Vozinha","Stopira","Diney","Roberto Lopes","Logan Costa","Kevin Pina","Jovane Cabral","João Paulo","Gilson Benchimol","Laros Duarte","Yannick Semedo","Willy Semedo","Telmo Arcanjo","Dailon Livramento","Ryan Mendes","Nuno da Costa","Steven Moreira","CJ dos Santos","Wagner Pina"],
+  "Arabia Saudita": ["Nawaf Al-Aqidi","Ali Majrashi","Ali Lajami","Abdulelah Al-Amri","Hassan Al-Tambakti","Nasser Al-Dawsari","Musab Al-Juwayr","Ayman Yahya","Firas Al-Buraikan","Salem Al-Dawsari","Saleh Al-Shehri","Saud Abdulhamid","Nawaf Boushal","Hassan Kadesh","Abdullah Al-Khaibari","Ziyad Al-Johani","Khalid Al-Ghannam","Alaa Al-Hejji","Abdullah Al-Hamdan","Sultan Mandash","Mohammed Al-Owais","Ahmed Al-Kassar","Mohamed Kanno","Moteb Al-Harbi","Jehad Thakri","Mohammed Abu Al-Shamat"],
+  "Uruguay": ["Sergio Rochet","José María Giménez","Sebastián Cáceres","Ronald Araújo","Manuel Ugarte","Rodrigo Bentancur","Nicolás de la Cruz","Federico Valverde","Darwin Núñez","Giorgian de Arrascaeta","Facundo Pellistri","Santiago Mele","Guillermo Varela","Agustín Canobbio","Emiliano Martínez","Mathías Olivera","Matías Viña","Brian Rodríguez","Santiago Bueno","Juan Manuel Sanabria","Rodrigo Zalazar"],
+  "Francia": ["Brice Samba","Malo Gusto","Lucas Digne","Dayot Upamecano","Jules Koundé","Manu Koné","Ousmane Dembélé","Aurélien Tchouaméni","Marcus Thuram","Kylian Mbappé","Michael Olise","Bradley Barcola","N'Golo Kanté","Adrien Rabiot","Maghnes Akliouche","Maxence Lacroix"],
+  "Senegal": ["Yehvann Diouf","Mamadou Sarr","Kalidou Koulibaly","Abdoulaye Seck","Idrissa Gueye","Pathé Ciss","Assane Diao","Lamine Camara","Bamba Dieng","Sadio Mané","Nicolas Jackson","Cherif Ndiaye","Iliman Ndiaye","Ismail Jakobs","Krépin Diatta","Édouard Mendy","Pape Matar Sarr","Ismaïla Sarr","Moussa Niakhaté","Ibrahim Mbaye","Habib Diarra","Bara Sapoko Ndiaye","Mory Diaw","Antoine Mendy","El Hadji Malick Diouf","Pape Gueye"],
+  "Irak": ["Rebin Sulaka","Hussein Ali","Zaid Tahseen","Akam Hashim","Manaf Younis","Jalal Hassan","Ali Yousif","Zidane Iqbal","Ahmed Maknzi","Amir Al-Ammari","Ali Jasim","Aymen Hussein","Kevin Yakob","Aimar Sher","Marko Farji","Ahmed Basil","Merchas Doski","Zaid Ismail","Mustafa Saadoon","Frans Putros"],
+  "Noruega": ["Ørjan Nyland","Morten Thorsby","Kristoffer Ajer","Leo Østigård","David Møller Wolfe","Patrick Berg","Alexander Sørloth","Sander Berge","Erling Haaland","Martin Ødegaard","Jørgen Strand Larsen","Sander Tangvik","Egil Selvik","Sondre Langås","Henrik Falchener","Julian Ryerson"],
+  "Argentina": ["Juan Musso","Marcos Senesi","Nicolás Tagliafico","Gonzalo Montiel","Leandro Paredes","Lisandro Martínez","Rodrigo De Paul","Valentín Barco","Julián Alvarez","Lionel Messi","Giovani Lo Celso","Gerónimo Rulli","Cristian Romero","Exequiel Palacios","Nicolás González","Thiago Almada","Giuliano Simeone","Nico Paz","Nicolás Otamendi","Alexis Mac Allister","José Manuel López","Lautaro Martínez","Emiliano Martínez","Enzo Fernández","Facundo Medina","Nahuel Molina"],
+  "Argelia": ["Melvin Mastil","Aïssa Mandi","Achref Abada","Houssem Aouar","Amine Gouiri","Farès Chaïbi","Anis Hadj Moussa","Nadhir Benbouali","Jaouen Hadjam","Hicham Boudaoui","Rayan Aït-Nouri","Oussama Benbot","Rafik Belghali","Mohamed Amoura","Nabil Bentaleb","Adil Boulbina","Ramy Bensebaini","Ibrahim Maza","Luca Zidane","Yacine Titraoui","Farès Ghedjemis","Samir Chergui"],
+  "Austria": ["David Affengruber","Kevin Danso","Xaver Schlager","Stefan Posch","Nicolas Seiwald","Florian Wiegele","Patrick Pentz","Saša Kalajdžić","Philipp Lienhart","Phillipp Mwene"],
+  "Jordania": ["Mohammad Abu Hashish","Abdallah Nasib","Husam Abu Dahab","Yazan Al-Arab","Amer Jamous"],
+  "Portugal": ["Diogo Costa","Nélson Semedo","Rúben Dias","Tomás Araújo","Diogo Dalot","Matheus Nunes","Cristiano Ronaldo","Bruno Fernandes","Samú Costa","Nuno Mendes","Francisco Conceição"],
+  "Colombia": ["David Ospina","Daniel Muñoz","Jhon Lucumí","Santiago Arias","Kevin Castaño","Richard Ríos","Luis Díaz","Jorge Carrascal","Jhon Córdoba","James Rodríguez","Jhon Arias","Camilo Vargas","Yerry Mina","Cucho Hernández","Juan Fernando Quintero","Jaminton Campaz","Deiver Machado","Davinson Sánchez","Álvaro Montero","Luis Suárez","Andrés Gómez"],
+  "República Democrática del Congo": ["Steve Kapuadi","Axel Tuanzebe","Dylan Batubinsika","Ngal'ayel Mukau","Nathanaël Mbuku","Samuel Moutoussamy","Brian Cipenga","Théo Bongonda","Gaël Kakuta","Joris Kayembe","Meschak Elia","Noah Sadiki","Aaron Tshibola","Timothy Fayulu","Cédric Bakambu","Charles Pickel","Fiston Mayele","Yoane Wissa","Matthieu Epolo","Chancel Mbemba","Simon Banza","Gédéon Kalulu","Edo Kayembe","Arthur Masuaku"],
+  "Uzbekistán": ["Akmal Mozgovoy","Otabek Shukurov","Jamshid Iskanderov","Odiljon Hamrobekov"],
+  "Inglaterra": ["Jordan Pickford","Ezri Konsa","Nico O'Reilly","Declan Rice","John Stones","Marc Guéhi","Bukayo Saka","Elliot Anderson","Harry Kane","Jude Bellingham","Marcus Rashford","Tino Livramento","Dean Henderson","Jordan Henderson","Dan Burn","Kobbie Mainoo","Morgan Rogers","Anthony Gordon","Ollie Watkins","Noni Madueke","Eberechi Eze","Ivan Toney","James Trafford","Reece James","Djed Spence","Jarell Quansah"],
+  "Croacia": ["Joško Gvardiol","Duje Ćaleta-Car","Josip Šutalo","Nikola Moro","Mateo Kovačić","Toni Fruk","Igor Matanović","Luka Sučić","Luka Vušković","Dominik Kotarski","Marco Pašalić","Martin Erlić","Petar Musa"],
+  "Ghana": ["Lawrence Ati-Zigi","Alidu Seidu","Caleb Yirenkyi","Jonas Adjetey","Thomas Partey","Abdul Mumin","Joseph Anang","Christopher Bonsu Baah","Gideon Mensah","Elisha Owusu","Benjamin Asare","Abdul Rahman Baba","Jerome Opoku","Iñaki Williams","Augustine Boakye","Kojo Peprah Oppong","Kamaldeen Sulemana","Derrick Luckassen","Ernest Nuamah","Prince Kwabena Adu","Marvin Senaya"],
+  "Panamá": ["Luis Mejía","César Blackman","José Córdoba","Fidel Escobar","Edgardo Fariña","Cristian Martínez","José Luis Rodríguez","Adalberto Carrasquilla","Tomás Rodríguez","Ismael Díaz","Yoel Bárcenas","César Samudio","Jiovany Ramos","Alberto Quintero","Aníbal Godoy","César Yanis","Orlando Mosquera","Michael Amir Murillo","Azarias Londoño","Roderick Miller","Jorge Gutiérrez"],
+};
 
-// ─── SQUADS ───────────────────────────────────────────────────────────────────
-async function loadSquads() {
-  try {
-    const response = await fetch("teams_squads.json");
-    teamSquads = await response.json();
-    // Construir mapa inverso jugador → equipo
-    playerTeamMap = {};
-    for (const [team, players] of Object.entries(teamSquads)) {
-      for (const player of players) {
-        playerTeamMap[player] = team;
-      }
+// Construir mapa inverso jugador → equipo al inicio (sin fetch)
+function buildPlayerTeamMap() {
+  playerTeamMap = {};
+  for (const [team, players] of Object.entries(teamSquads)) {
+    for (const player of players) {
+      playerTeamMap[player] = team;
     }
-    renderTopScorers();
-  } catch (err) {
-    console.warn("No se pudieron cargar las plantillas:", err);
   }
 }
 
@@ -849,7 +891,7 @@ function resetAll() {
 resetBtn.addEventListener("click", resetAll);
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+buildPlayerTeamMap();
 renderGroupStage();
 renderKnockout();
 renderTopScorers();
-loadSquads();
