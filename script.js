@@ -570,8 +570,8 @@ function buildStandingsRows(standings) {
     const qualify = i < 2 ? ' style="background:rgba(47,111,246,0.06)"' : "";
     return `<tr${qualify}>
       <td><span class="pos-badge">${i + 1}</span> <span class="flag">${escapeHtml(mapFlag(row.team))}</span>${escapeHtml(row.team)}</td>
-      <td>${row.played}</td><td>${row.won}</td><td>${row.draw}</td><td>${row.lost}</td>
-      <td>${row.gf}</td><td>${row.ga}</td>
+      <td class="col-hide">${row.played}</td><td class="col-hide">${row.won}</td><td class="col-hide">${row.draw}</td><td class="col-hide">${row.lost}</td>
+      <td class="col-hide">${row.gf}</td><td class="col-hide">${row.ga}</td>
       <td class="${diff > 0 ? "diff-pos" : diff < 0 ? "diff-neg" : ""}">${diff >= 0 ? "+" + diff : diff}</td>
       <td><strong>${row.points}</strong></td>
     </tr>`;
@@ -601,8 +601,8 @@ function buildGroupCard(group) {
         <table data-standings-group="${escapeHtml(group.name)}">
           <thead>
             <tr>
-              <th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
-              <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
+              <th>Equipo</th><th class="col-hide">PJ</th><th class="col-hide">G</th><th class="col-hide">E</th><th class="col-hide">P</th>
+              <th class="col-hide">GF</th><th class="col-hide">GC</th><th>DG</th><th>Pts</th>
             </tr>
           </thead>
           <tbody>${buildStandingsRows(standings)}</tbody>
@@ -624,39 +624,42 @@ function buildMatchRow(match) {
   return `
     <div class="match-row">
       <div class="match-time">${escapeHtml(formatMatchTime(match.date, match.time, match.stadium))}</div>
-      <div class="team-block">
-        <div class="team-label"><span class="flag">${escapeHtml(mapFlag(match.team1))}</span>${t1}</div>
-        <div class="scorer-block">
-          <label class="input-label">Anotadores</label>
-          <div class="autocomplete-wrapper">
-            <input class="scorer-input" type="text" placeholder="Ej. Rodríguez, García"
-              value="${escapeHtml(getScorer(match.id, 1))}"
-              data-scorer-id="${id}" data-team="1" data-team-name="${t1}" />
-            <div class="autocomplete-list"></div>
+      <div class="match-team-row">
+        <div class="team-block">
+          <div class="team-label"><span class="flag">${escapeHtml(mapFlag(match.team1))}</span>${t1}</div>
+          <div class="scorer-block">
+            <label class="input-label">Anotadores</label>
+            <div class="autocomplete-wrapper">
+              <input class="scorer-input" type="text" placeholder="Ej. Rodríguez, García"
+                value="${escapeHtml(getScorer(match.id, 1))}"
+                data-scorer-id="${id}" data-team="1" data-team-name="${t1}" />
+              <div class="autocomplete-list"></div>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <label class="input-label">Goles</label>
-        <input class="score-input" type="number" min="0" step="1"
-          value="${escapeHtml(result.score1)}" data-result-id="${id}" data-team="1" />
-      </div>
-      <div class="team-block">
-        <div class="team-label"><span class="flag">${escapeHtml(mapFlag(match.team2))}</span>${t2}</div>
-        <div class="scorer-block">
-          <label class="input-label">Anotadores</label>
-          <div class="autocomplete-wrapper">
-            <input class="scorer-input" type="text" placeholder="Ej. Sánchez, López"
-              value="${escapeHtml(getScorer(match.id, 2))}"
-              data-scorer-id="${id}" data-team="2" data-team-name="${t2}" />
-            <div class="autocomplete-list"></div>
-          </div>
+        <div class="score-col">
+          <input class="score-input" type="number" min="0" step="1"
+            value="${escapeHtml(result.score1)}" data-result-id="${id}" data-team="1" />
         </div>
       </div>
-      <div>
-        <label class="input-label">Goles</label>
-        <input class="score-input" type="number" min="0" step="1"
-          value="${escapeHtml(result.score2)}" data-result-id="${id}" data-team="2" />
+      <div class="mobile-vs">vs</div>
+      <div class="match-team-row">
+        <div class="team-block">
+          <div class="team-label"><span class="flag">${escapeHtml(mapFlag(match.team2))}</span>${t2}</div>
+          <div class="scorer-block">
+            <label class="input-label">Anotadores</label>
+            <div class="autocomplete-wrapper">
+              <input class="scorer-input" type="text" placeholder="Ej. Sánchez, López"
+                value="${escapeHtml(getScorer(match.id, 2))}"
+                data-scorer-id="${id}" data-team="2" data-team-name="${t2}" />
+              <div class="autocomplete-list"></div>
+            </div>
+          </div>
+        </div>
+        <div class="score-col">
+          <input class="score-input" type="number" min="0" step="1"
+            value="${escapeHtml(result.score2)}" data-result-id="${id}" data-team="2" />
+        </div>
       </div>
     </div>`;
 }
@@ -727,43 +730,46 @@ function buildBracketRow(match) {
   row.className = "bracket-row";
   row.innerHTML = `
     <div class="match-time">${escapeHtml(formatMatchTime(match.date, match.time, match.stadium))}</div>
-    <div class="team-block">
-      <div class="team-label" data-knockout-team="${id}" data-side="1">
-        <span class="flag">${escapeHtml(mapFlag(team1))}</span>${t1}
-      </div>
-      <div class="scorer-block">
-        <label class="input-label">Anotadores</label>
-        <div class="autocomplete-wrapper">
-          <input class="scorer-input" type="text" placeholder="Ej. Gómez"
-            value="${escapeHtml(getKnockoutScorer(match.id, 1))}"
-            data-knockout-scorer="${id}" data-team="1" data-team-name="${t1}" />
-          <div class="autocomplete-list"></div>
+    <div class="match-team-row">
+      <div class="team-block">
+        <div class="team-label" data-knockout-team="${id}" data-side="1">
+          <span class="flag">${escapeHtml(mapFlag(team1))}</span>${t1}
+        </div>
+        <div class="scorer-block">
+          <label class="input-label">Anotadores</label>
+          <div class="autocomplete-wrapper">
+            <input class="scorer-input" type="text" placeholder="Ej. Gómez"
+              value="${escapeHtml(getKnockoutScorer(match.id, 1))}"
+              data-knockout-scorer="${id}" data-team="1" data-team-name="${t1}" />
+            <div class="autocomplete-list"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <label class="input-label">Goles</label>
-      <input class="score-input" type="number" min="0" step="1"
-        value="${escapeHtml(result.score1)}" data-knockout-result="${id}" data-team="1" />
-    </div>
-    <div class="team-block">
-      <div class="team-label" data-knockout-team="${id}" data-side="2">
-        <span class="flag">${escapeHtml(mapFlag(team2))}</span>${t2}
+      <div class="score-col">
+        <input class="score-input" type="number" min="0" step="1"
+          value="${escapeHtml(result.score1)}" data-knockout-result="${id}" data-team="1" />
       </div>
-      <div class="scorer-block">
-        <label class="input-label">Anotadores</label>
-        <div class="autocomplete-wrapper">
-          <input class="scorer-input" type="text" placeholder="Ej. Díaz"
-            value="${escapeHtml(getKnockoutScorer(match.id, 2))}"
-            data-knockout-scorer="${id}" data-team="2" data-team-name="${t2}" />
-          <div class="autocomplete-list"></div>
+    </div>
+    <div class="mobile-vs">vs</div>
+    <div class="match-team-row">
+      <div class="team-block">
+        <div class="team-label" data-knockout-team="${id}" data-side="2">
+          <span class="flag">${escapeHtml(mapFlag(team2))}</span>${t2}
+        </div>
+        <div class="scorer-block">
+          <label class="input-label">Anotadores</label>
+          <div class="autocomplete-wrapper">
+            <input class="scorer-input" type="text" placeholder="Ej. Díaz"
+              value="${escapeHtml(getKnockoutScorer(match.id, 2))}"
+              data-knockout-scorer="${id}" data-team="2" data-team-name="${t2}" />
+            <div class="autocomplete-list"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <label class="input-label">Goles</label>
-      <input class="score-input" type="number" min="0" step="1"
-        value="${escapeHtml(result.score2)}" data-knockout-result="${id}" data-team="2" />
+      <div class="score-col">
+        <input class="score-input" type="number" min="0" step="1"
+          value="${escapeHtml(result.score2)}" data-knockout-result="${id}" data-team="2" />
+      </div>
     </div>`;
   return row;
 }

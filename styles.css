@@ -291,16 +291,91 @@ tbody tr:nth-child(odd) {
   margin-top: 12px;
 }
 
-@media (max-width: 900px) {
-  .match-row,
-  .bracket-row {
-    grid-template-columns: 1fr;
+/* ══════════════════════════════════════════════
+   DISEÑO MÓVIL — tarjeta compacta de partido
+   ══════════════════════════════════════════════ */
+@media (max-width: 760px) {
+
+  .page-shell { padding: 12px; }
+
+  .hero {
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
   }
 
-  .match-row > *,
-  .bracket-row > * {
-    width: 100%;
+  .hero h1 { font-size: 1.4rem; }
+  .hero-copy { font-size: 0.88rem; margin-top: 10px; }
+
+  .group-card,
+  .bracket-card { padding: 14px; border-radius: 18px; margin-bottom: 14px; }
+
+  /* ── Tabla standings: ocultar columnas menos críticas ── */
+  .col-hide { display: none; }
+
+  /* ── Fila de partido rediseñada como tarjeta compacta ── */
+  .match-row,
+  .bracket-row {
+    display: block;
+    padding: 10px 0;
+    border-top: 1px solid rgba(15,23,42,0.08);
   }
+
+  .match-row:first-of-type,
+  .bracket-row:first-of-type { border-top: none; }
+
+  .match-time {
+    font-size: 0.74rem;
+    color: var(--accent);
+    font-weight: 600;
+    padding-bottom: 6px;
+    display: block;
+  }
+
+  /* Cada equipo: nombre+anotadores a la izquierda, goles a la derecha */
+  .match-team-row {
+    display: grid;
+    grid-template-columns: 1fr 60px;
+    gap: 8px;
+    align-items: start;
+    padding: 4px 0;
+  }
+
+  .team-block { gap: 4px; }
+  .team-label { font-size: 0.92rem; gap: 6px; }
+
+  .scorer-block { gap: 3px; }
+  .scorer-input {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+
+  .input-label { font-size: 0.7rem; margin-bottom: 2px; }
+
+  .score-input {
+    width: 100%;
+    padding: 8px 4px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  /* Divisor VS entre equipos */
+  .mobile-vs {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    padding: 2px 0;
+    opacity: 0.5;
+  }
+
+  /* Tabla standings más compacta */
+  table { font-size: 0.82rem; }
+  thead th, tbody td { padding: 8px 6px; }
 }
 
 /* ── Tabla de goleadores mejorada ── */
@@ -372,3 +447,28 @@ tbody tr:nth-child(odd) {
 
 /* ── Match list wrapper ── */
 .match-list { display: grid; gap: 0; }
+
+/* ── match-team-row: en desktop es invisible (el grid padre controla el layout) ── */
+/* En móvil el media query lo convierte en fila con goles a la derecha              */
+.match-team-row { display: contents; }
+.score-col      { display: contents; }
+.mobile-vs      { display: none; }
+
+@media (max-width: 760px) {
+  .match-team-row {
+    display: grid;
+    grid-template-columns: 1fr 58px;
+    gap: 8px;
+    align-items: start;
+  }
+  .score-col {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 1px;
+  }
+  .mobile-vs { display: block; }
+
+  /* En desktop los labels de "Goles" sí aparecen; en móvil el espacio es
+     más justo así que los ocultamos (el número habla solo) */
+  .score-col .input-label { display: none; }
+}
